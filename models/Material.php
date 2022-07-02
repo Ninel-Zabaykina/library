@@ -55,4 +55,19 @@ class Material extends \yii\db\ActiveRecord
             'link_id' => 'Link ID',
         ];
     }
+
+    public function getCategory()
+    {
+        return $this->hasOne(Category::className(), ['id' => 'idCategory']);
+    }
+
+    public function getKind()
+    {
+        return $this->hasOne(Kind::className(), ['id' => 'idKind']);
+    }
+
+    public function getLink()
+    {
+        return $this->hasOne(Link::className(), ['id' => 'idLink']);
+    }
 }

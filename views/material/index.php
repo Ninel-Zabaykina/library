@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\MaterialSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Materials';
+$this->title = 'Материалы';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="material-index">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Material', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить материал', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -28,11 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'name',
-            'author',
-            'kind_id',
-            'category_id',
+            //'id',
+            'name' => 'Название',
+            'author' => 'Авторы',
+            'kind_id' => 'Тип',
+            [
+                'attribute'=>'Категория',
+                'value'=>'category.name',
+            ],
             //'description:ntext',
             //'tag_id',
             //'link_id',
