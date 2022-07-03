@@ -2,8 +2,11 @@
 
 namespace app\controllers;
 
+use app\models\Category;
+use app\models\Kind;
 use app\models\Material;
 use app\models\MaterialSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -77,8 +80,16 @@ class MaterialController extends Controller
             $model->loadDefaultValues();
         }
 
+        $categories = Category::find()->all();
+        $categories = ArrayHelper::map($categories, 'id', 'name');
+
+        $kinds = Kind::find()->all();
+        $kinds = ArrayHelper::map($kinds, 'id', 'name');
+
         return $this->render('create', [
             'model' => $model,
+            'categories' => $categories,
+            'kinds' => $kinds,
         ]);
     }
 

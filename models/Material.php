@@ -32,7 +32,7 @@ class Material extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'author', 'kind_id', 'category_id', 'tag_id', 'link_id'], 'required'],
+            [['name', 'kind_id', 'category_id'], 'required'],
             [['kind_id', 'category_id', 'tag_id', 'link_id'], 'integer'],
             [['description'], 'string'],
             [['name', 'author'], 'string', 'max' => 255],
@@ -46,11 +46,11 @@ class Material extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'author' => 'Author',
-            'kind_id' => 'Kind ID',
-            'category_id' => 'Category ID',
-            'description' => 'Description',
+            'name' => 'Название',
+            'author' => 'Автор',
+            'kind_id' => 'Тип',
+            'category_id' => 'Категория',
+            'description' => 'Описание',
             'tag_id' => 'Tag ID',
             'link_id' => 'Link ID',
         ];
