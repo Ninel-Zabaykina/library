@@ -108,8 +108,16 @@ class MaterialController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $categories = Category::find()->all();
+        $categories = ArrayHelper::map($categories, 'id', 'name');
+
+        $kinds = Kind::find()->all();
+        $kinds = ArrayHelper::map($kinds, 'id', 'name');
+
         return $this->render('update', [
             'model' => $model,
+            'categories' => $categories,
+            'kinds' => $kinds,
         ]);
     }
 

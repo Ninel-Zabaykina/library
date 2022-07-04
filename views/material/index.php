@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Material;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -17,24 +18,36 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Добавить материал', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+//        'filterModel' => $searchModel,
+
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             //'id',
-            'name' => 'Название',
-            'author' => 'Авторы',
-            'kind_id' => 'Тип',
+            'name',
+            'author',
             [
-                'attribute'=>'Категория',
-                'value'=>'category.name',
+                'label' => 'Тип',
+                'attribute'=>'kind_id',
+                'value' => function ($model, $key, $index, $widget) {
+                    return $model->kind->name;
+                },
+                'format' => 'raw',
+            ],
+            [
+                    'label' => 'Категория',
+                'attribute'=>'category_id',
+                'value' => function ($model, $key, $index, $widget) {
+                    return $model->category->name;
+                },
+                'format' => 'raw',
             ],
             //'description:ntext',
             //'tag_id',

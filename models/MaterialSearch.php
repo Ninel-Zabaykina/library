@@ -11,6 +11,8 @@ use app\models\Material;
  */
 class MaterialSearch extends Material
 {
+    public $searchstring;
+
     /**
      * {@inheritdoc}
      */
@@ -19,6 +21,7 @@ class MaterialSearch extends Material
         return [
             [['id', 'kind_id', 'category_id', 'tag_id', 'link_id'], 'integer'],
             [['name', 'author', 'description'], 'safe'],
+            [['searchstring'], 'safe'],
         ];
     }
 
@@ -65,9 +68,10 @@ class MaterialSearch extends Material
             'link_id' => $this->link_id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'author', $this->author])
-            ->andFilterWhere(['like', 'description', $this->description]);
+        $query->orFilterWhere(['like', 'name', $this->searchstring])
+            ->orFilterWhere(['like', 'author', $this->searchstring])
+            ->orFilterWhere(['like', 'kind_id', $this->searchstring])
+            ->orFilterWhere(['like', 'category_id', $this->searchstring]);
 
         return $dataProvider;
     }

@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Material */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Materials', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Материалы', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -16,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -29,14 +29,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'name',
-            'author',
-            'kind_id',
-            'category_id',
-            'description:ntext',
-            'tag_id',
-            'link_id',
+            //'id',
+            'name' ,
+            'author' => 'Автор',
+            'kind_id' => 'Тип',
+            'category_id' => 'Категория',
+            'description:ntext' => 'Описание',
+            //'tag_id',
+            //'link_id',
         ],
     ]) ?>
 

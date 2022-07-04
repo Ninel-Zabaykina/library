@@ -15,21 +15,21 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'searchstring') ?>
 
-    <?= $form->field($model, 'name') ?>
+ <!--   <?/*= $form->field($model, 'name') */?>
 
-    <?= $form->field($model, 'author') ?>
+    <?/*= $form->field($model, 'author') */?>
 
-    <?= $form->field($model, 'kind_id') ?>
+    <?/*= $form->field($model, 'kind_id') */?>
 
-    <?= $form->field($model, 'category_id') ?>
+   <?/*= $form->field($model, 'category_id') */?>
 
     <?php // echo $form->field($model, 'description') ?>
 
     <?php // echo $form->field($model, 'tag_id') ?>
 
-    <?php // echo $form->field($model, 'link_id') ?>
+    <?php // echo $form->field($model, 'link_id') ?> -->
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

@@ -58,16 +58,11 @@ class Material extends \yii\db\ActiveRecord
 
     public function getCategory()
     {
-        return $this->hasOne(Category::className(), ['id' => 'idCategory']);
+        return $this->hasOne(Category::className(), ['id' => 'category_id']);
     }
 
     public function getKind()
     {
-        return $this->hasOne(Kind::className(), ['id' => 'idKind']);
-    }
-
-    public function getLink()
-    {
-        return $this->hasOne(Link::className(), ['id' => 'idLink']);
+        return $this->hasOne(Kind::className(), ['id' => 'kind_id']);
     }
 }
