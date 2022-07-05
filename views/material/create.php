@@ -31,21 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-        <fieldset>
-            <legend>Tags</legend>
-            <?= $form->field($model, 'tag_ids')->widget(Select2::className(), [
-                'model' => $model,
-                'attribute' => 'tag_ids',
-                'data' => ArrayHelper::map(Tag::find()->all(), 'name', 'name'),
-                'options' => [
-                    'multiple' => true,
-                ],
-                'pluginOptions' => [
-                    'tags' => true,
-                ],
-            ]); ?>
-        </fieldset>
-
         <div class="form-group">
             <?= Html::submitButton('Добавить', ['class' => 'btn btn-success']) ?>
         </div>

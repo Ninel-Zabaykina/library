@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -22,7 +23,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'tag_id')->textInput() ?>
+    <?= $form->field($model, 'tags')->dropDownList(
+        ArrayHelper::map($tags, 'id', 'title')
+    ) ?>
 
     <?= $form->field($model, 'link_id')->textInput() ?>
 

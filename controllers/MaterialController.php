@@ -6,6 +6,8 @@ use app\models\Category;
 use app\models\Kind;
 use app\models\Material;
 use app\models\MaterialSearch;
+use app\models\MaterialTag;
+use app\models\Tag;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -61,9 +63,28 @@ class MaterialController extends Controller
     {
         $form = new Material();
 
+        if ($this->request->isPost && $form->load($this->request->post())) {
+            $tag_ids = $this->request->post();
+
+            MaterialTag::deleteAll(['material_id' => $id]);
+            $tags = [];
+            foreach ($tag_ids['Material']['tag_ids'] as $tag_id) {
+                $tags[] = [$id, $tag_id];
+            }
+            MaterialTag::getDb()->createCommand()
+                ->batchInsert(MaterialTag::tableName(), ['material_id', 'tag_id'], $tags)->execute();
+        }
+        $model = $this->findModel($id);
+        $model->tag_ids = [];
+        $tag_ids = MaterialTag::find()->select('tag_id')->where(['material_id' => $id])->all();
+        foreach ($tag_ids as $t){
+            $model->tag_ids[] = $t->tag_id;
+        }
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
             'form' => $form,
+            'tags' => Tag::find()->all(),
         ]);
     }
 

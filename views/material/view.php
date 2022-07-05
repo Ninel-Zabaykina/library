@@ -2,7 +2,7 @@
 
 use app\models\Tag;
 use kartik\select2\Select2;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -39,27 +39,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'kind.name',
             'category.name',
             'description:ntext',
-            'tag_id',
+//            'tag_id',
             //'link_id',
         ],
     ]) ?>
 
+
     <?php $form = ActiveForm::begin(); ?>
 
-    <fieldset>
-        <legend>Tags</legend>
-        <?= $form->field($model, 'tag_ids')->widget(Select2::className(), [
-            'model' => $model,
-            'attribute' => 'tag_ids',
-            'data' => ArrayHelper::map(Tag::find()->all(), 'name', 'name'),
-            'options' => [
-                'multiple' => true,
-            ],
-            'pluginOptions' => [
-                'tags' => true,
-            ],
-        ]); ?>
-    </fieldset>
+    <?= $form->field($model, 'tag_ids')->widget(Select2::className(), [
+        'model' => $model,
+        'attribute' => 'tag_ids',
+        'data' => ArrayHelper::map(Tag::find()->all(), 'id', 'name'),
+        'options' => [
+            'multiple' => true,
+        ],
+        'pluginOptions' => [
+            'tags' => true,
+        ],
+    ]); ?>
 
     <div class="form-group">
         <?= Html::submitButton('Добавить тэг', ['class' => 'btn btn-success']) ?>

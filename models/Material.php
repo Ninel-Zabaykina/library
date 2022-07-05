@@ -4,6 +4,8 @@ namespace app\models;
 
 use cornernote\linkall\LinkAllBehavior;
 use Yii;
+use yii\db\ActiveQuery;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "material".
@@ -39,6 +41,7 @@ class Material extends \yii\db\ActiveRecord
             [['kind_id', 'category_id', 'tag_id', 'link_id'], 'integer'],
             [['description'], 'string'],
             [['name', 'author'], 'string', 'max' => 255],
+            [['tags'], 'safe'],
         ];
     }
 
@@ -66,24 +69,44 @@ class Material extends \yii\db\ActiveRecord
         ];
     }
 
-    public function afterSave($insert, $changedAttributes)
+    /**
+     * @return ActiveQuery
+     */
+    public function getMaterialTag()
     {
-        $tags = [];
-        foreach ($this->tag_ids as $tag_name) {
-            $tag = Tag::getTagByName($tag_name);
-            if ($tag) {
-                $tags[] = $tag;
-            }
-        }
-        $this->linkAll('tags', $tags);
-        parent::afterSave($insert, $changedAttributes);
+        return $this->hasMany(MaterialTag::className(), ['material_id' => 'id']);
     }
 
+    /**
+     * Список тэгов, закреплённых за постом.
+     * @var array
+     */
+    protected $tags = [];
+
+    /**
+     * Устанавлиает тэги поста.
+     * @param $tagsId
+     */
+    public function setTags($tagsId)
+    {
+        $this->tags = (array) $tagsId;
+    }
+
+    /**
+     * Возвращает массив идентификаторов тэгов.
+     */
     public function getTags()
     {
-        return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
-            ->viaTable('material_tag', ['material_id' => 'id']);
+        return ArrayHelper::getColumn(
+            $this->getMaterialTag()->all(), 'tag_id'
+        );
     }
+
+//    public function getTags()
+//    {
+//        return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
+//            ->viaTable('material_tag', ['material_id' => 'id']);
+//    }
 
     public function getCategory()
     {
@@ -94,4 +117,18 @@ class Material extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Kind::className(), ['id' => 'kind_id']);
     }
+
+//    public function afterSave($insert, $changedAttributes)
+//    {
+//        MaterialTag::deleteAll(['material_id' => $this->id]);
+//        $tags = [];
+//        foreach ($this->tag_ids as $tag_name) {
+//            $tags = [$this->id, $tag_name];
+//        }
+//        self::getDb()->createCommand()
+//            ->batchInsert(MaterialTag::tableName(), ['material_id', 'tag_id'], $tags)->execute();
+//
+//        parent::afterSave($insert, $changedAttributes);
+//
+//    }
 }
