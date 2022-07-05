@@ -1,5 +1,8 @@
 <?php
 
+use app\models\Tag;
+use kartik\select2\Select2;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -27,6 +30,21 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $form->field($model, 'category_id')->dropDownList($categories) ?>
 
         <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+
+        <fieldset>
+            <legend>Tags</legend>
+            <?= $form->field($model, 'tag_ids')->widget(Select2::className(), [
+                'model' => $model,
+                'attribute' => 'tag_ids',
+                'data' => ArrayHelper::map(Tag::find()->all(), 'name', 'name'),
+                'options' => [
+                    'multiple' => true,
+                ],
+                'pluginOptions' => [
+                    'tags' => true,
+                ],
+            ]); ?>
+        </fieldset>
 
         <div class="form-group">
             <?= Html::submitButton('Добавить', ['class' => 'btn btn-success']) ?>

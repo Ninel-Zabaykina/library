@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use cornernote\linkall\LinkAllBehavior;
 use Yii;
 
 /**
@@ -18,6 +19,8 @@ use Yii;
  */
 class Material extends \yii\db\ActiveRecord
 {
+    public $tag_ids;
+
     /**
      * {@inheritdoc}
      */
@@ -39,6 +42,13 @@ class Material extends \yii\db\ActiveRecord
         ];
     }
 
+    public function behaviors()
+    {
+        return [
+            LinkAllBehavior::className(),
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -54,6 +64,25 @@ class Material extends \yii\db\ActiveRecord
             'tag_id' => 'Tag ID',
             'link_id' => 'Link ID',
         ];
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        $tags = [];
+        foreach ($this->tag_ids as $tag_name) {
+            $tag = Tag::getTagByName($tag_name);
+            if ($tag) {
+                $tags[] = $tag;
+            }
+        }
+        $this->linkAll('tags', $tags);
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    public function getTags()
+    {
+        return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
+            ->viaTable('material_tag', ['material_id' => 'id']);
     }
 
     public function getCategory()

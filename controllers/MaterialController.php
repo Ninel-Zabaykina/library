@@ -6,6 +6,7 @@ use app\models\Category;
 use app\models\Kind;
 use app\models\Material;
 use app\models\MaterialSearch;
+use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -58,8 +59,11 @@ class MaterialController extends Controller
      */
     public function actionView($id)
     {
+        $form = new Material();
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'form' => $form,
         ]);
     }
 
@@ -72,19 +76,21 @@ class MaterialController extends Controller
     {
         $model = new Material();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
-        }
-
         $categories = Category::find()->all();
         $categories = ArrayHelper::map($categories, 'id', 'name');
 
         $kinds = Kind::find()->all();
         $kinds = ArrayHelper::map($kinds, 'id', 'name');
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Post has been updated.'));
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        } elseif ($this->request->isGet) {
+            $model->load($this->request->get());
+            $model->tag_ids = ArrayHelper::map($model->tags, 'name', 'name');
+        }
 
         return $this->render('create', [
             'model' => $model,
@@ -104,15 +110,20 @@ class MaterialController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
         $categories = Category::find()->all();
         $categories = ArrayHelper::map($categories, 'id', 'name');
 
         $kinds = Kind::find()->all();
         $kinds = ArrayHelper::map($kinds, 'id', 'name');
+
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Post has been updated.'));
+            return $this->redirect(['update', 'id' => $model->id]);
+        }
+        elseif ($this->request->isPost) {
+            $model->load(Yii::$app->request->get());
+            $model->tag_ids = ArrayHelper::map($model->tags, 'name', 'name');
+        }
 
         return $this->render('update', [
             'model' => $model,
