@@ -26,12 +26,20 @@ $this->title = 'Материалы';
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
 //        'filterModel' => $searchModel,
-
+        'summary' => '',
         'columns' => [
 //            ['class' => 'yii\grid\SerialColumn'],
 
             //'id',
-            'name',
+//            'name',
+            [
+               'attribute' => 'name',
+               'value' => function($model){
+                   return Html::a($model->name, ['material/view', 'id' => $model->id]);
+//                   return Html::a(Html::encode($model->name), Url::to(['/' . $model->category->slug . '/' . $data->slug . '/' . $data->id]));
+                },
+                'format' => 'raw'
+            ],
             'author',
             [
                 'label' => 'Тип',
