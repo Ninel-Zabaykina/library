@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Material;
+use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -23,9 +24,11 @@ $this->title = 'Материалы';
 
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
+    <?php $dataProvider->sort = false; ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
+//        'filterModel' => $searchModel
         'summary' => '',
         'columns' => [
 //            ['class' => 'yii\grid\SerialColumn'],
@@ -62,11 +65,13 @@ $this->title = 'Материалы';
             //'link_id',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Material $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'template' => '{update} {delete}',
+//                'urlCreator' => function ($action, Material $model, $key, $index, $column) {
+//                    return Url::toRoute([$action, 'id' => $model->id]);
+//                 }
             ],
         ],
+        'tableOptions'=>['class'=>'table'],
     ]); ?>
 
 

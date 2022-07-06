@@ -13,9 +13,13 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'options' => ['class'=>'col-md-8']
     ]); ?>
 
     <?= $form->field($model, 'searchstring') ?>
+
+    <?= Html::submitButton('Искать', ['class' => 'btn btn-primary']) ?>
+
 
  <!--   <?/*= $form->field($model, 'name') */?>
 
